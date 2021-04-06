@@ -16,7 +16,7 @@ table = database.load_xxx_table()
 partition_key = table.schema['partition_key']
 sort_key = table.schema.get('sort_key')
 
-item = table.get(
+item = table.get_item(
     partition_key='...',
     sort_key='...',
 )
