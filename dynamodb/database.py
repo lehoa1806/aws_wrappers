@@ -27,8 +27,10 @@ class Database:
         self.dynamodb = boto3.resource('dynamodb', **kwargs)
 
     @property
-    def tables(self):
-        self.dynamodb.get_tables()
+    def tables(self) -> Dict[str, Table]:
+        return {
+            table.name: Table(table) for table in self.dynamodb.tables.all()
+        }
 
     def load_table(
         self,
