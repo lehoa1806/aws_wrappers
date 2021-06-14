@@ -1,5 +1,5 @@
 from functools import reduce
-from typing import Any, Dict, Iterator, List, Set, Tuple
+from typing import Any, Dict, Iterable, Iterator, List, Set, Tuple
 
 from botocore import exceptions
 
@@ -277,3 +277,12 @@ class Table:
         }
         response = self.boto_table.update_item(**_kwargs)
         return response.get('Attributes', {})
+
+    def write_batch_items(
+        self,
+        items: Iterable[Any],
+        overwrite_by_pkeys: List[str] = None,
+    ) -> None:
+        with self.boto_table.batch_writer(overwrite_by_pkeys) as batch_writer:
+            for item in items:
+                batch_writer.put_item(Item=item)
